@@ -31,7 +31,7 @@ export default function LocalPage() {
     };
 
     console.log("FORM DATA:", data);
-    alert("Game Created! Check console for details.");
+    
     window.location.href = "/local/game";
   };
 
