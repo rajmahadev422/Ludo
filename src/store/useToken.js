@@ -6,7 +6,7 @@ const plToken = {
     ext: 0,
     tokens: [
       { id: 1, pos: -1, initial: [1.5, 1.5] },
-      { id: 2, pos: 39, initial: [3.5, 1.5] },
+      { id: 2, pos: 0, initial: [3.5, 1.5] },
       { id: 3, pos: -1, initial: [1.5, 3.5] },
       { id: 4, pos: -1, initial: [3.5, 3.5] },
     ],
@@ -16,7 +16,7 @@ const plToken = {
     ext: 13,
     tokens: [
       { id: 1, pos: -1, initial: [10.5, 1.5] },
-      { id: 2, pos: 39, initial: [12.5, 1.5] },
+      { id: 2, pos: 0, initial: [12.5, 1.5] },
       { id: 3, pos: -1, initial: [10.5, 3.5] },
       { id: 4, pos: -1, initial: [12.5, 3.5] },
     ],
@@ -26,7 +26,7 @@ const plToken = {
     ext: 26,
     tokens: [
       { id: 1, pos: -1, initial: [10.5, 10.5] },
-      { id: 2, pos: 39, initial: [12.5, 10.5] },
+      { id: 2, pos: 0, initial: [12.5, 10.5] },
       { id: 3, pos: -1, initial: [10.5, 12.5] },
       { id: 4, pos: -1, initial: [12.5, 12.5] },
     ],
@@ -38,7 +38,7 @@ const plToken = {
       { id: 1, pos: -1, initial: [3.5, 10.5] },
       { id: 2, pos: -1, initial: [3.5, 12.5] },
       { id: 3, pos: -1, initial: [1.5, 10.5] },
-      { id: 4, pos: 39, initial: [1.5, 12.5] },
+      { id: 4, pos: 0, initial: [1.5, 12.5] },
     ],
   },
 };
@@ -66,7 +66,7 @@ export default function handleToken(ctx, canvas, size) {
     bases[1].tokens.map(t => {
     const { id, pos, initial } = t;
       let p = pos + bases[1].ext;
-      if(p > 51) p = p - 50;
+      if(p > 51) p = p - 52;
     if (pos === -1)
       drawToken(ctx, initial[0], initial[1], cell, BASES[bases[0]].dark);
     else drawToken(ctx, LOOP_PATH[p].row, LOOP_PATH[p].col, cell, BASES[bases[0]].dark);
