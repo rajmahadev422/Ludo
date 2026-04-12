@@ -25,10 +25,10 @@ export default function Ludo() {
 
   return (
     <div className="relative min-h-full min-w-full">
-      <div className="absolute border-2 z-0">
+      <div className="absolute">
         <Board size={size} />
       </div>
-      <div className="absolute z-2">
+      <div className="absolute">
         <Token size={size} />
       </div>
     </div>

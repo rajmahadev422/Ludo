@@ -20,7 +20,7 @@ const Board = ({ size }) => {
   return (
       <canvas
         ref={boardRef}
-        className="block"
+        className="block z-10 border-2 p-1"
       />
   );
 };
