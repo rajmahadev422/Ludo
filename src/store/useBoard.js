@@ -1,7 +1,6 @@
 // boardRenderer.js
 
-import { starCells } from "./data";
-import { setupCanvas } from "./helper";
+import { setupCanvas, starCells } from "./helper";
 
 function drawOutline(ctx, cell, size, grid) {
   // Premium background with subtle gradient
@@ -131,7 +130,7 @@ export default function drawBoard(ctx, canvas, size) {
     // Decorative corner accents
     drawCornerAccent(ctx, x, y, cell, base.light);
   });
-styleHomeCell(ctx, cell)
+  styleHomeCell(ctx, cell);
   // Draw star cells with enhanced styling
   drawStars(ctx, cell);
 }

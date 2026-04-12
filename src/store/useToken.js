@@ -1,47 +1,4 @@
-import { LOOP_PATH } from "./data";
-import { setupCanvas } from "./helper";
-const plToken = {
-  red: {
-    name: "p-1",
-    ext: 0,
-    tokens: [
-      { id: 1, pos: -1, initial: [1.5, 1.5] },
-      { id: 2, pos: 0, initial: [3.5, 1.5] },
-      { id: 3, pos: -1, initial: [1.5, 3.5] },
-      { id: 4, pos: -1, initial: [3.5, 3.5] },
-    ],
-  },
-  green: {
-    name: "p-2",
-    ext: 13,
-    tokens: [
-      { id: 1, pos: -1, initial: [10.5, 1.5] },
-      { id: 2, pos: 0, initial: [12.5, 1.5] },
-      { id: 3, pos: -1, initial: [10.5, 3.5] },
-      { id: 4, pos: -1, initial: [12.5, 3.5] },
-    ],
-  },
-  blue: {
-    name: "p-3",
-    ext: 26,
-    tokens: [
-      { id: 1, pos: -1, initial: [10.5, 10.5] },
-      { id: 2, pos: 0, initial: [12.5, 10.5] },
-      { id: 3, pos: -1, initial: [10.5, 12.5] },
-      { id: 4, pos: -1, initial: [12.5, 12.5] },
-    ],
-  },
-  yellow: {
-    name: "p-4",
-    ext: 39,
-    tokens: [
-      { id: 1, pos: -1, initial: [3.5, 10.5] },
-      { id: 2, pos: -1, initial: [3.5, 12.5] },
-      { id: 3, pos: -1, initial: [1.5, 10.5] },
-      { id: 4, pos: 0, initial: [1.5, 12.5] },
-    ],
-  },
-};
+import { setupCanvas, LOOP_PATH } from "./helper";
 
 const BASES = {
   red: { col: 9, row: 0, base: "#c0392b", light: "#f8d7d4", dark: "#7b241c" },
@@ -56,11 +13,11 @@ const BASES = {
   blue: { col: 0, row: 9, base: "#2471a3", light: "#d0e9f8", dark: "#154060" },
 };
 
-export default function handleToken(ctx, canvas, size) {
+export default function handleToken(ctx, canvas, size, plToken) {
   const grid = 15;
   const cell = size / grid;
   setupCanvas(canvas, ctx, size);
-
+  
 // draw tokens
   Object.entries(plToken).forEach(bases => {
     bases[1].tokens.map(t => {
