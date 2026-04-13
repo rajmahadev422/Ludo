@@ -41,11 +41,11 @@ export default function Home() {
         </div>
 
         {/* Game mode buttons */}
-        <div className="flex flex-wrap justify-between gap-6 w-full animate-slide-up">
+        <div className="flex flex-wrap justify-between gap-6 w-full animate-slide-up px-0 md:px-6 lg:px-10">
           {/* Local Multiplayer */}
           <Link 
             href="/local" 
-            className="group relative flex-1 min-w-100"
+            className="group relative flex-1 min-w-60"
           >
             <div className="absolute inset-0 bg-linear-to-r from-green-400 to-emerald-500 rounded-2xl blur-xl opacity-70 group-hover:opacity-100 transition-opacity duration-300"></div>
             <div className="relative h-full bg-linear-to-br from-green-500 to-emerald-600 rounded-2xl p-8 shadow-2xl transform group-hover:scale-105 transition-all duration-300 border border-white/20">
@@ -67,7 +67,7 @@ export default function Home() {
           {/* Online Multiplayer */}
           <Link 
             href="/online" 
-            className="group relative flex-1 min-w-100"
+            className="group relative flex-1 min-w-60"
           >
             <div className="absolute inset-0 bg-linear-to-r from-blue-400 to-indigo-500 rounded-2xl blur-xl opacity-70 group-hover:opacity-100 transition-opacity duration-300"></div>
             <div className="relative h-full bg-linear-to-br from-blue-500 to-indigo-600 rounded-2xl p-8 shadow-2xl transform group-hover:scale-105 transition-all duration-300 border border-white/20">
@@ -89,7 +89,7 @@ export default function Home() {
           {/* Computer */}
           <Link 
             href="/computer" 
-            className="group relative flex-1 min-w-100"
+            className="group relative flex-1 min-w-60"
           >
             <div className="absolute inset-0 bg-linear-to-r from-purple-400 to-pink-500 rounded-2xl blur-xl opacity-70 group-hover:opacity-100 transition-opacity duration-300"></div>
             <div className="relative h-full bg-linear-to-br from-purple-500 to-pink-600 rounded-2xl p-8 shadow-2xl transform group-hover:scale-105 transition-all duration-300 border border-white/20">
@@ -129,9 +129,9 @@ export default function Home() {
         </div>
 
         {/* Footer */}
-        <div className="absolute bottom-4 mt-3 text-white/30 text-sm">
+        {/* <div className="absolute bottom-4 mt-3 text-white/30 text-sm">
           © 2024 Ludo Game • All rights reserved
-        </div>
+        </div> */}
       </div>
     </div>
   );
