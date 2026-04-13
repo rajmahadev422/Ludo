@@ -31,12 +31,12 @@ export default function LocalPage() {
     };
 
     console.log("FORM DATA:", data);
-    
+
     window.location.href = "/local/game";
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
+    <div className="min-h-screen flex items-center justify-center">
       <form
         onSubmit={handleSubmit}
         className="bg-gray-800 p-8 rounded-2xl w-95 shadow-xl"
@@ -98,7 +98,7 @@ export default function LocalPage() {
         {/* Submit */}
         <button
           type="submit"
-          className="w-full py-3 bg-green-500 hover:bg-green-600 rounded-xl font-semibold"
+          className="w-full py-3 cursor-pointer bg-green-500 hover:bg-green-600 rounded-xl font-semibold"
         >
           Start Game
         </button>
