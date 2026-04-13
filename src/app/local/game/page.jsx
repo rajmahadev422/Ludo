@@ -24,7 +24,7 @@ export default function Ludo() {
   }, []);
 
   return (
-    <div className="relative flex h-dvh w-screen items-center justify-center bg-slate-900">
+    <div className="relative flex h-dvh w-screen items-center justify-center">
       <div className="absolute">
         <Board size={size} />
       </div>
