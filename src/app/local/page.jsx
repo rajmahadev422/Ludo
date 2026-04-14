@@ -39,7 +39,7 @@ export default function LocalPage() {
     <div className="min-h-screen flex items-center justify-center">
       <form
         onSubmit={handleSubmit}
-        className="bg-gray-800 p-8 rounded-2xl w-95 shadow-xl"
+        className="inset-0 bg-slate-800 p-8 rounded-2xl w-95 shadow-xl"
       >
         <h1 className="text-2xl font-bold text-center mb-6">Game Setup</h1>
 
