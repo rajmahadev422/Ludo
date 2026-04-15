@@ -9,8 +9,7 @@ import { useRef } from "react";
 const Token = ({ size }) => {
   const tokenRef = useRef(null);
 
-  const { initializeToken, playersData, handleClick, value } = useLudo();
-  const [pl, setPl] = useState(playersData);
+  const { initializeToken, playersData, handleClick, value, choice, players } = useLudo();
 
   useEffect(() => {
     initializeToken();
@@ -21,8 +20,10 @@ const Token = ({ size }) => {
     const ctx = canvas.getContext("2d");
     if (playersData) {
       handleToken(ctx, canvas, size, playersData);
-      addText(ctx, value, 1,0.5)
+      const base = players[choice % 4];
+      addText(ctx, base, 1,0.5)
     };
+    console.log(choice, players);
   }, [size, playersData, value]);
 
   function addText(ctx, text, x, y) {

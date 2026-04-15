@@ -1,8 +1,13 @@
 "use client";
 import useLudo from "@/store/useLudo";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const FACES = {
+  0: [
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0],
+  ],
   1: [
     [0, 0, 0],
     [0, 1, 0],
@@ -76,20 +81,18 @@ function Pips({ value }) {
 }
 
 export default function Dice() {
-  const [value, setValue] = useState(1);
   const [rolling, setRolling] = useState(false);
   const [flash, setFlash] = useState(false);
 
-  const {set} = useLudo()
+  const {set, value} = useLudo()
 
   const rollDice = () => {
-    if (rolling) return;
+    if (rolling || value !== 0) return;
     setRolling(true);
     setFlash(false);
 
     setTimeout(() => {
       const result = Math.floor(Math.random() * 6) + 1;
-      setValue(result);
       setRolling(false);
       setFlash(true);
       setTimeout(() => setFlash(false), 400);

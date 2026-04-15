@@ -1,28 +1,47 @@
 import { setupCanvas, boardData } from "./helper";
 
-export default function handleToken(ctx, canvas, size, plToken) {
+export default function handleToken(
+  ctx,
+  canvas,
+  size,
+  plToken,
+  choice = "red",
+  value = 0,
+) {
   const grid = 15;
   const cell = size / grid;
   setupCanvas(canvas, ctx, size);
-  
-// draw tokens
+
+  // draw tokens
   Object.entries(plToken).forEach((bases) => {
-    bases[1].tokens.map(t => {
-    const { id, pos, initial } = t;
-    let p = pos
-    if(p > 56) p = 56;
-    if (p === -1)
-      drawToken(ctx, initial[0], initial[1], cell, bases[0]);
-    else drawToken(ctx, boardData[bases[0]].path[p][1], boardData[bases[0]].path[p][0], cell, bases[0]);
-  })
-  })
+    bases[1].tokens.map((t) => {
+      const { id, pos, initial } = t;
+      let p = pos;
+      if (p > 56) p = 56;
+      if (p === -1) {
+        if (choice === bases[0] && value === 6)
+          drawToken(ctx, initial[0], initial[1], cell, bases[0], true);
+        else drawToken(ctx, initial[0], initial[1], cell, bases[0]);
+      } else if (choice === bases[0])
+        drawToken(ctx, initial[0], initial[1], cell, bases[0], true);
+      else
+        drawToken(
+          ctx,
+          boardData[bases[0]].path[p][1],
+          boardData[bases[0]].path[p][0],
+          cell,
+          bases[0],
+        );
+    });
+  });
 }
 
-function drawToken(ctx, row, col, cell, color) {
+function drawToken(ctx, row, col, cell, color, selected = false) {
+  
   const x = row * cell + cell / 2;
   const y = col * cell + cell / 2;
   const radius = cell * 0.35;
-  
+
   // Color-specific styling
   const tokenStyles = {
     red: {
@@ -54,7 +73,7 @@ function drawToken(ctx, row, col, cell, color) {
       shadow: "rgba(30, 64, 175, 0.5)",
     },
   };
-  
+
   // Default style if color not found
   const style = tokenStyles[color] || {
     main: color,
@@ -63,65 +82,101 @@ function drawToken(ctx, row, col, cell, color) {
     highlight: "white",
     shadow: "rgba(0,0,0,0.3)",
   };
-  
+
   // Drop shadow
   ctx.shadowColor = style.shadow;
   ctx.shadowBlur = 8;
   ctx.shadowOffsetX = 2;
   ctx.shadowOffsetY = 2;
-  
+
   // Main token body with gradient
   const gradient = ctx.createRadialGradient(
-    x - radius * 0.3, y - radius * 0.3, radius * 0.1,
-    x, y, radius
+    x - radius * 0.3,
+    y - radius * 0.3,
+    radius * 0.1,
+    x,
+    y,
+    radius,
   );
   gradient.addColorStop(0, style.light);
   gradient.addColorStop(0.5, style.main);
   gradient.addColorStop(1, style.dark);
-  
+
   ctx.beginPath();
   ctx.arc(x, y, radius, 0, Math.PI * 2);
   ctx.fillStyle = gradient;
   ctx.fill();
-  
+
   // Remove shadow for border
   ctx.shadowColor = "transparent";
-  
+
   // Outer border
   ctx.beginPath();
   ctx.arc(x, y, radius, 0, Math.PI * 2);
   ctx.strokeStyle = style.dark;
   ctx.lineWidth = cell * 0.05;
   ctx.stroke();
-  
+
   // Inner border (decorative ring)
   ctx.beginPath();
   ctx.arc(x, y, radius * 0.8, 0, Math.PI * 2);
   ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
   ctx.lineWidth = cell * 0.03;
   ctx.stroke();
-  
+
   // Specular highlight (glossy effect)
   ctx.beginPath();
   ctx.arc(x - radius * 0.25, y - radius * 0.25, radius * 0.15, 0, Math.PI * 2);
   ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
   ctx.fill();
-  
+
   // Small secondary highlight
   ctx.beginPath();
   ctx.arc(x - radius * 0.4, y - radius * 0.3, radius * 0.06, 0, Math.PI * 2);
   ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
   ctx.fill();
-  
+
   // Token symbol (star for all tokens)
-  drawStar(ctx, x + radius * 0.05, y + radius * 0.1, radius * 0.25, style.highlight);
-  
+  drawStar(
+    ctx,
+    x + radius * 0.05,
+    y + radius * 0.1,
+    radius * 0.25,
+    style.highlight,
+  );
+
   // Bottom shadow/depth ring
   ctx.beginPath();
   ctx.arc(x + radius * 0.1, y + radius * 0.1, radius * 0.85, 0, Math.PI * 2);
   ctx.strokeStyle = "rgba(0, 0, 0, 0.2)";
   ctx.lineWidth = cell * 0.02;
   ctx.stroke();
+
+  // if(selected) highlightToken(ctx,x, y, radius, cell, style, 0.1);
+}
+
+function highlightToken(ctx, x, y, radius = 1, cell, style, dashOffset) {
+  console.log("highlight");
+  ctx.save();
+
+  // glow effect
+  ctx.shadowColor = style.main;
+  ctx.shadowBlur = 15;
+
+  ctx.beginPath();
+
+  // dashed circle
+  ctx.setLineDash([6, 4]);
+  ctx.lineDashOffset = dashOffset;
+
+  const pulse = 1 + Math.sin(Date.now() * 0.01) * 0.05;
+  ctx.arc(x, y, radius * 1.3 * pulse, 0, Math.PI * 2);
+
+  ctx.strokeStyle = style.light;
+  ctx.lineWidth = cell * 0.06;
+  ctx.stroke();
+
+  ctx.restore();
 }
 
 // Helper function to draw a star on the token
@@ -131,25 +186,25 @@ function drawStar(ctx, cx, cy, radius, color) {
   ctx.fillStyle = color;
   ctx.shadowColor = "rgba(0,0,0,0.2)";
   ctx.shadowBlur = 3;
-  
+
   ctx.beginPath();
   const spikes = 5;
   const outerRadius = radius;
   const innerRadius = radius * 0.5;
-  
+
   for (let i = 0; i < spikes * 2; i++) {
     const r = i % 2 === 0 ? outerRadius : innerRadius;
     const angle = (i * Math.PI) / spikes - Math.PI / 2;
     const x = Math.cos(angle) * r;
     const y = Math.sin(angle) * r;
-    
+
     if (i === 0) {
       ctx.moveTo(x, y);
     } else {
       ctx.lineTo(x, y);
     }
   }
-  
+
   ctx.closePath();
   ctx.fill();
   ctx.shadowColor = "transparent";

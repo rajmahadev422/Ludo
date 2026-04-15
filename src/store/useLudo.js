@@ -4,46 +4,48 @@ import { plToken } from "./helper";
 const useLudo = create((set, get) => ({
   playersData: null,
   value: 0,
-
+  choice: 0,
+  players: null,
   set: set,
 
   initializeToken: () => {
     const playersData =
       JSON.parse(localStorage.getItem("playerData")) || plToken;
-    set({ playersData: playersData });
+    
+    const players = Object.keys(playersData);
+    set({ playersData: playersData, players: players });
+
     localStorage.setItem("pos", -1);
     localStorage.setItem("playersData", JSON.stringify(playersData));
   },
-
-  rollDice: () => {},
 
   moveToken: async (tokenId, steps, base) => {
     const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
 
     const { playersData } = get();
-    
+
     const token = playersData[base].tokens.find((t) => t.id === tokenId);
 
     if (!token) return;
 
     // 🔥 Base exit
     if (token.pos === -1) {
-      if (steps !== 6) return;
-
-      set((state) => ({
-        playersData: {
-          ...state.playersData,
-          [base]: {
-            ...state.playersData[base],
-            tokens: state.playersData[base].tokens.map((t) =>
-              t.id === tokenId ? { ...t, pos: 0 } : t,
-            ),
+      if (steps === 6)
+        set((state) => ({
+          playersData: {
+            ...state.playersData,
+            [base]: {
+              ...state.playersData[base],
+              tokens: state.playersData[base].tokens.map((t) =>
+                t.id === tokenId ? { ...t, pos: 0 } : t,
+              ),
+            },
           },
-        },
-      }));
-
+        }));
+        else set({ choice: get().choice + 1 })
       await sleep(200);
       steps--;
+      set({ value: 0});
       return;
     }
 
@@ -71,9 +73,10 @@ const useLudo = create((set, get) => ({
 
       await sleep(180);
     }
+    set({ value: 0, choice: get().choice + 1 });
   },
 
-  handleClick: (e, tokenRef, size) => {
+  handleClick: async (e, tokenRef, size) => {
     const canvas = tokenRef.current;
     const rect = canvas.getBoundingClientRect();
     const cell = size / 15;
@@ -96,7 +99,6 @@ const useLudo = create((set, get) => ({
     if (!steps || steps === 0) return;
 
     get().moveToken(2, steps, base);
-    console.log(`Clicked cell: ${base}`);
   },
 }));
 
