@@ -22,7 +22,7 @@ const Token = ({ size }) => {
     if (playersData) {
       handleToken(ctx, canvas, size, playersData);
       addText(ctx, value, 1,0.5)
-    }
+    };
   }, [size, playersData, value]);
 
   function addText(ctx, text, x, y) {

@@ -45,8 +45,8 @@ const useLudo = create((set, get) => ({
 
     if(col < 6 && row < 6) base = 'red';
     else if(col > 9 && row < 6) base = 'green';
-    else if(col < 6 && row > 9) base = 'yellow';
-    else if(col > 9 && row > 9) base = 'blue';
+    else if(col < 6 && row > 9) base = 'blue';
+    else if(col > 9 && row > 9) base = 'yellow';
     else return;
     console.log(base)
     get().moveToken(1, 1, base)

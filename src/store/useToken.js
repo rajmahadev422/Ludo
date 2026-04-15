@@ -1,17 +1,4 @@
-import { setupCanvas, LOOP_PATH } from "./helper";
-
-const BASES = {
-  red: { col: 9, row: 0, base: "#c0392b", light: "#f8d7d4", dark: "#7b241c" },
-  green: { col: 9, row: 9, base: "#27ae60", light: "#d5f0dc", dark: "#1a7040" },
-  yellow: {
-    col: 0,
-    row: 0,
-    base: "#d4a017",
-    light: "#fef9d9",
-    dark: "#8a6800",
-  },
-  blue: { col: 0, row: 9, base: "#2471a3", light: "#d0e9f8", dark: "#154060" },
-};
+import { setupCanvas, boardData } from "./helper";
 
 export default function handleToken(ctx, canvas, size, plToken) {
   const grid = 15;
@@ -19,14 +6,14 @@ export default function handleToken(ctx, canvas, size, plToken) {
   setupCanvas(canvas, ctx, size);
   
 // draw tokens
-  Object.entries(plToken).forEach(bases => {
+  Object.entries(plToken).forEach((bases) => {
     bases[1].tokens.map(t => {
     const { id, pos, initial } = t;
-      let p = pos + bases[1].ext;
-      if(p > 51) p = p - 52;
-    if (pos === -1)
+    let p = pos
+    if(p > 56) p = 56;
+    if (p === -1)
       drawToken(ctx, initial[0], initial[1], cell, bases[0]);
-    else drawToken(ctx, LOOP_PATH[p].row, LOOP_PATH[p].col, cell, bases[0]);
+    else drawToken(ctx, boardData[bases[0]].path[p][1], boardData[bases[0]].path[p][0], cell, bases[0]);
   })
   })
 }

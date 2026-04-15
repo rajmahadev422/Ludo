@@ -1,6 +1,6 @@
 // boardRenderer.js
 
-import { setupCanvas, starCells } from "./helper";
+import { boardData, setupCanvas, starCells } from "./helper";
 
 function drawOutline(ctx, cell, size, grid) {
   // Premium background with subtle gradient
@@ -101,14 +101,15 @@ const BASES = {
 export default function drawBoard(ctx, canvas, size) {
   const grid = 15;
   const cell = size / grid;
+
   setupCanvas(canvas, ctx, size);
   drawOutline(ctx, cell, size, grid);
 
   const theme = getTheme();
   drawCenter(ctx, cell, theme);
   // Draw player bases with gradients and shadows
-  Object.entries(PLAYER_BASES).forEach(([player, base]) => {
-    const [x, y] = base.start;
+  Object.entries(boardData).forEach(([player, base]) => {
+    const [x, y] = base.origin;
 
     // Main base with gradient
     drawGradientRect(ctx, x, y, 6, 6, cell, base.gradient[0], base.gradient[1]);
@@ -122,15 +123,13 @@ export default function drawBoard(ctx, canvas, size) {
     ctx.shadowColor = "transparent";
 
     // Player home circles (pawn positions)
-    drawStyledCircle(ctx, x + 1, y + 1, cell, base.color, base.border);
-    drawStyledCircle(ctx, x + 3, y + 1, cell, base.color, base.border);
-    drawStyledCircle(ctx, x + 1, y + 3, cell, base.color, base.border);
-    drawStyledCircle(ctx, x + 3, y + 3, cell, base.color, base.border);
+    [[1,1],[3,1],[1,3],[3,3]].forEach(([row,col]) => drawStyledCircle(ctx, x + row, y + col, cell, base.color, base.border));
 
+    [0, 51, 52, 53, 54, 55].forEach((p) => drawBoundary(ctx, base.path[p][1], base.path[p][0], cell, base.fill, base.border, 1.5))
     // Decorative corner accents
     drawCornerAccent(ctx, x, y, cell, base.light);
   });
-  styleHomeCell(ctx, cell);
+  // styleHomeCell(ctx, cell);
   // Draw star cells with enhanced styling
   drawStars(ctx, cell);
 }
