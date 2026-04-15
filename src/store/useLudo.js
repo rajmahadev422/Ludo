@@ -73,7 +73,8 @@ const useLudo = create((set, get) => ({
 
       await sleep(180);
     }
-    set({ value: 0, choice: get().choice + 1 });
+    if(steps !== 6) set({choice: get().choice + 1})
+    set({ value: 0 });
   },
 
   handleClick: async (e, tokenRef, size) => {
