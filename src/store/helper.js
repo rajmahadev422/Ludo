@@ -24,7 +24,6 @@ export const starCells = [
 export const plToken = {
   red: {
     name: "p-1",
-    ext: 0,
     tokens: [
       { id: 1, pos: -1, initial: [1.5, 1.5] },
       { id: 2, pos: -1, initial: [3.5, 1.5] },
@@ -34,7 +33,6 @@ export const plToken = {
   },
   green: {
     name: "p-2",
-    ext: 13,
     tokens: [
       { id: 1, pos: -1, initial: [10.5, 1.5] },
       { id: 2, pos: -1, initial: [12.5, 1.5] },
@@ -44,7 +42,6 @@ export const plToken = {
   },
   yellow: {
     name: "p-3",
-    ext: 26,
     tokens: [
       { id: 1, pos: -1, initial: [10.5, 10.5] },
       { id: 2, pos: -1, initial: [12.5, 10.5] },
@@ -54,7 +51,6 @@ export const plToken = {
   },
   blue: {
     name: "p-4",
-    ext: 39,
     tokens: [
       { id: 1, pos: -1, initial: [3.5, 10.5] },
       { id: 2, pos: -1, initial: [3.5, 12.5] },

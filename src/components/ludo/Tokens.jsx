@@ -19,11 +19,12 @@ const Token = ({ size }) => {
     const canvas = tokenRef.current;
     const ctx = canvas.getContext("2d");
     if (playersData) {
-      handleToken(ctx, canvas, size, playersData);
       const base = players[choice % 4];
+      handleToken(ctx, canvas, size, playersData);
+
       addText(ctx, base, 1,0.5)
     };
-    console.log(choice, players);
+    localStorage.setItem('playersData', JSON.stringify(playersData));
   }, [size, playersData, value]);
 
   function addText(ctx, text, x, y) {

@@ -1,5 +1,6 @@
 import { create } from "zustand";
-import { plToken } from "./helper";
+import { boardData, plToken } from "./helper";
+import { step } from "three/tsl";
 
 const useLudo = create((set, get) => ({
   playersData: null,
@@ -10,13 +11,12 @@ const useLudo = create((set, get) => ({
 
   initializeToken: () => {
     const playersData =
-      JSON.parse(localStorage.getItem("playerData")) || plToken;
-    
+      JSON.parse(localStorage.getItem("playersData")) || plToken;
+
     const players = Object.keys(playersData);
     set({ playersData: playersData, players: players });
 
     localStorage.setItem("pos", -1);
-    localStorage.setItem("playersData", JSON.stringify(playersData));
   },
 
   moveToken: async (tokenId, steps, base) => {
@@ -30,7 +30,7 @@ const useLudo = create((set, get) => ({
 
     // 🔥 Base exit
     if (token.pos === -1) {
-      if (steps === 6)
+      if (steps === 6) {
         set((state) => ({
           playersData: {
             ...state.playersData,
@@ -42,10 +42,12 @@ const useLudo = create((set, get) => ({
             },
           },
         }));
-        else set({ choice: get().choice + 1 })
+        console.log(tokenId, steps, base)
+      }
+      else set({ choice: get().choice + 1 });
       await sleep(200);
       steps--;
-      set({ value: 0});
+      set({ value: 0 });
       return;
     }
 
@@ -73,7 +75,7 @@ const useLudo = create((set, get) => ({
 
       await sleep(180);
     }
-    if(steps !== 6) set({choice: get().choice + 1})
+    if (steps !== 6) set({ choice: get().choice + 1 });
     set({ value: 0 });
   },
 
@@ -88,16 +90,28 @@ const useLudo = create((set, get) => ({
     const col = Math.floor(x / cell);
     const row = Math.floor(y / cell);
 
-    let base = "red";
-
-    if (col < 6 && row < 6) base = "red";
-    else if (col > 9 && row < 6) base = "green";
-    else if (col < 6 && row > 9) base = "blue";
-    else if (col > 9 && row > 9) base = "yellow";
-    else return;
-    const steps = get().value;
+    let steps = get().value;
+    //  steps = 6;
 
     if (!steps || steps === 0) return;
+    let base = get().players[get().choice % 4];
+    // base = "red";
+    let token = boardData[base].path.findIndex(
+      ([r, c]) => c === col && r === row,
+    );
+
+    token = plToken[base].tokens.filter((t) => t.pos === token);
+    console.log(token)
+
+    if (token !== 0 && !token)
+      token = plToken[base].tokens.filter((token) => {
+        if (
+          row - 0.5 <= token.initial[0] <= row + 0.5 &&
+          col - 0.5 <= token.initial[1] <= col + 0.5
+        )
+          return token;
+      });
+    // console.log(token, row, col);
 
     get().moveToken(2, steps, base);
   },

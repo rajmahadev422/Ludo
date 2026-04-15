@@ -5,8 +5,6 @@ export default function handleToken(
   canvas,
   size,
   plToken,
-  choice = "red",
-  value = 0,
 ) {
   const grid = 15;
   const cell = size / grid;
@@ -19,11 +17,8 @@ export default function handleToken(
       let p = pos;
       if (p > 56) p = 56;
       if (p === -1) {
-        if (choice === bases[0] && value === 6)
-          drawToken(ctx, initial[0], initial[1], cell, bases[0], true);
-        else drawToken(ctx, initial[0], initial[1], cell, bases[0]);
-      } else if (choice === bases[0])
-        drawToken(ctx, initial[0], initial[1], cell, bases[0], true);
+        drawToken(ctx, initial[0], initial[1], cell, bases[0]);
+      }
       else
         drawToken(
           ctx,
