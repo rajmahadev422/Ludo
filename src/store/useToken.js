@@ -13,6 +13,7 @@ export default function handleToken(
 
   // draw tokens
   Object.entries(plToken).forEach((bases) => {
+    if(base === bases[0]) return;
     bases[1].tokens.map((t) => {
       const { id, pos, initial } = t;
       let p = pos;

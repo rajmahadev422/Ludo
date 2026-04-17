@@ -1,6 +1,5 @@
 import { create } from "zustand";
-import { boardData, plToken } from "./helper";
-import { step } from "three/tsl";
+import { boardData, plToken, starCells } from "./helper";
 
 const useLudo = create((set, get) => ({
   playersData: null,
@@ -73,6 +72,7 @@ const useLudo = create((set, get) => ({
 
       await sleep(180);
     }
+    get().findTokenPos(get().playersData[base].tokens.find(t => t.id === tokenId).pos, base)
     if (steps !== 6) set({ choice: get().choice + 1 });
     set({ value: 0 });
   },
@@ -82,14 +82,27 @@ const useLudo = create((set, get) => ({
     let id = null;
     if (steps === 6 && (x <= row + 5 && x >= row + 1 && y <= col + 5 && y >= col + 1)) {
       id = get().playersData[base].tokens.find(t => t.pos === -1)?.id || null;
-      console.log(id)
     }
     else {
       const pos = boardData[base].path.findIndex(([r, c]) => r === y && c === x);
       if(pos !== -1) id = get().playersData[base].tokens.find(t => t.pos === pos)?.id || null;
-      console.log(id)
     }
     return id;
+  },
+
+  findTokenPos: (pos, base) => {
+    const [y, x] = boardData[base].path[pos];
+    if(starCells.find(([r, c]) => r === x && c === y)) return;
+
+    let index = null;
+    get().players.forEach(pl => {
+      if(pl === base) return;
+      index = boardData[pl].path.findIndex(([r, c]) => r === y && c === x);
+      if(index === -1) return
+
+      const id = get().playersData[pl].tokens.find(t => t.pos === index)?.id || null;
+      if(id) console.log(id, pl, "move to -1", base);
+    });
   },
 
   handleClick: async (e, tokenRef, size) => {

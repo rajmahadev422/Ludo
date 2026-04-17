@@ -25,7 +25,7 @@ const Token = ({ size }) => {
       addText(ctx, base, 1,0.5)
     };
     localStorage.setItem('playersData', JSON.stringify(playersData));
-  }, [size, playersData, value]);
+  }, [size, playersData, value, choice]);
 
   function addText(ctx, text, x, y) {
     const cell = size/15;
