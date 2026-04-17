@@ -106,7 +106,7 @@ const useLudo = create((set, get) => ({
     if (!steps || steps === 0) return;
     const base = get().players[get().choice % 4];
 
-    let id = get().findTokenId(x, y, base, steps) || 1;
+    let id = get().findTokenId(x, y, base, steps);
 
     if(id) get().moveToken(id, steps, base);
   },
