@@ -32,6 +32,8 @@ export default function LocalPage() {
 
     console.log("FORM DATA:", data);
 
+    localStorage.removeItem('playersData');
+
     window.location.href = "/local/game";
   };
 
