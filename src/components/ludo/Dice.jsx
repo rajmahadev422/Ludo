@@ -92,7 +92,7 @@ export default function Dice() {
     setFlash(false);
 
     setTimeout(() => {
-      const result = Math.floor(Math.random() * 6) + 1;
+      const result = Math.min(Math.floor(Math.random() * 8) + 1, 6);
       setRolling(false);
       setFlash(true);
       setTimeout(() => setFlash(false), 400);

@@ -42,9 +42,7 @@ const useLudo = create((set, get) => ({
             },
           },
         }));
-        console.log(tokenId, steps, base)
-      }
-      else set({ choice: get().choice + 1 });
+      } else set({ choice: get().choice + 1 });
       await sleep(200);
       steps--;
       set({ value: 0 });
@@ -79,41 +77,38 @@ const useLudo = create((set, get) => ({
     set({ value: 0 });
   },
 
+  findTokenId: (x, y, base, steps) => {
+    const [row, col] = boardData[base].origin;
+    let id = null;
+    if (steps === 6 && (x <= row + 5 && x >= row + 1 && y <= col + 5 && y >= col + 1))
+      id = get().playersData[base].tokens.find(t => t.pos === -1)?.id || null;
+    else {
+      const pos = boardData[base].path.findIndex(([r, c]) => r === y && c === x);
+      id = get().playersData[base].tokens.find(t => t.pos === pos)?.id || null;
+    }
+    return id;
+  },
+
   handleClick: async (e, tokenRef, size) => {
     const canvas = tokenRef.current;
     const rect = canvas.getBoundingClientRect();
     const cell = size / 15;
 
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    let x = e.clientX - rect.left;
+    let y = e.clientY - rect.top;
 
-    const col = Math.floor(x / cell);
-    const row = Math.floor(y / cell);
+    x = Math.floor(x / cell);
+    y = Math.floor(y / cell);
 
     let steps = get().value;
     //  steps = 6;
 
     if (!steps || steps === 0) return;
-    let base = get().players[get().choice % 4];
-    // base = "red";
-    let token = boardData[base].path.findIndex(
-      ([r, c]) => c === col && r === row,
-    );
+    const base = get().players[get().choice % 4];
 
-    token = plToken[base].tokens.filter((t) => t.pos === token);
-    console.log(token)
+    let id = get().findTokenId(x, y, base, steps) || 1;
 
-    if (token !== 0 && !token)
-      token = plToken[base].tokens.filter((token) => {
-        if (
-          row - 0.5 <= token.initial[0] <= row + 0.5 &&
-          col - 0.5 <= token.initial[1] <= col + 0.5
-        )
-          return token;
-      });
-    // console.log(token, row, col);
-
-    get().moveToken(2, steps, base);
+    if(id) get().moveToken(id, steps, base);
   },
 }));
 
