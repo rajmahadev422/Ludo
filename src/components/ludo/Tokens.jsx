@@ -20,7 +20,7 @@ const Token = ({ size }) => {
     const ctx = canvas.getContext("2d");
     if (playersData) {
       const base = players[choice % 4];
-      handleToken(ctx, canvas, size, playersData);
+      handleToken(ctx, canvas, size, playersData, base);
 
       addText(ctx, base, 1,0.5)
     };

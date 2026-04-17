@@ -1,10 +1,12 @@
 import { setupCanvas, boardData } from "./helper";
+import useLudo from "./useLudo";
 
 export default function handleToken(
   ctx,
   canvas,
   size,
   plToken,
+  base
 ) {
   const grid = 15;
   const cell = size / grid;
@@ -29,6 +31,22 @@ export default function handleToken(
         );
     });
   });
+  if (base) plToken[base].tokens.map((t) => {
+      const { id, pos, initial } = t;
+      let p = pos;
+      if (p > 56) p = 56;
+      if (p === -1) {
+        drawToken(ctx, initial[0], initial[1], cell, base);
+      }
+      else
+        drawToken(
+          ctx,
+          boardData[base].path[p][1],
+          boardData[base].path[p][0],
+          cell,
+          base,
+        );
+    });
 }
 
 function drawToken(ctx, row, col, cell, color, selected = false) {
