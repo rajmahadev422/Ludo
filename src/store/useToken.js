@@ -1,5 +1,4 @@
 import { setupCanvas, boardData } from "./helper";
-import useLudo from "./useLudo";
 
 export default function handleToken(
   ctx,

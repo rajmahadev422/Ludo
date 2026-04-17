@@ -84,7 +84,7 @@ export default function Dice() {
   const [rolling, setRolling] = useState(false);
   const [flash, setFlash] = useState(false);
 
-  const {set, value} = useLudo()
+  const {set, value, tokenOut, players, choice, skip} = useLudo()
 
   const rollDice = () => {
     if (rolling || value !== 0) return;
@@ -96,8 +96,12 @@ export default function Dice() {
       setRolling(false);
       setFlash(true);
       setTimeout(() => setFlash(false), 400);
-      set({value: result});
+
+      if(result !== 6 && !tokenOut(players[choice % 4])) skip();
+      else set({value: result});
     }, 600);
+
+
   };
 
   const spinKeyframes = `

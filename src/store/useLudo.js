@@ -80,11 +80,14 @@ const useLudo = create((set, get) => ({
   findTokenId: (x, y, base, steps) => {
     const [row, col] = boardData[base].origin;
     let id = null;
-    if (steps === 6 && (x <= row + 5 && x >= row + 1 && y <= col + 5 && y >= col + 1))
+    if (steps === 6 && (x <= row + 5 && x >= row + 1 && y <= col + 5 && y >= col + 1)) {
       id = get().playersData[base].tokens.find(t => t.pos === -1)?.id || null;
+      console.log(id)
+    }
     else {
       const pos = boardData[base].path.findIndex(([r, c]) => r === y && c === x);
-      id = get().playersData[base].tokens.find(t => t.pos === pos)?.id || null;
+      if(pos !== -1) id = get().playersData[base].tokens.find(t => t.pos === pos)?.id || null;
+      console.log(id)
     }
     return id;
   },
@@ -107,9 +110,18 @@ const useLudo = create((set, get) => ({
     const base = get().players[get().choice % 4];
 
     let id = get().findTokenId(x, y, base, steps);
-
+    
     if(id) get().moveToken(id, steps, base);
   },
+
+  tokenOut: (base) => {
+    return get().playersData[base].tokens.some(t => t.pos !== -1);
+  },
+
+  skip: () => {
+    console.log(get().choice)
+    set({value: 0, choice: get().choice+1});
+  }
 }));
 
 export default useLudo;
