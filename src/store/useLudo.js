@@ -14,8 +14,8 @@ const useLudo = create((set, get) => ({
 
     const players = Object.keys(playersData);
     set({ playersData: playersData, players: players });
-
-    localStorage.setItem("pos", -1);
+    const choice = JSON.parse(localStorage.getItem("choice")) || 0;
+    set({ choice: Number(choice) });
   },
 
   moveToken: async (tokenId, steps, base) => {
@@ -47,7 +47,8 @@ const useLudo = create((set, get) => ({
       set({ value: 0 });
       return;
     }
-
+    const home = get().playersData[base].tokens.find(t => t.id === tokenId).pos + steps;
+    if(home > 56) return;
     // 🚶 Step-by-step movement
     for (let i = 0; i < steps; i++) {
       set((state) => {
@@ -56,7 +57,6 @@ const useLudo = create((set, get) => ({
         );
 
         const newPos = currentToken.pos + 1;
-
         return {
           playersData: {
             ...state.playersData,
@@ -72,37 +72,97 @@ const useLudo = create((set, get) => ({
 
       await sleep(180);
     }
-    get().findTokenPos(get().playersData[base].tokens.find(t => t.id === tokenId).pos, base)
-    if (steps !== 6) set({ choice: get().choice + 1 });
-    set({ value: 0 });
+    const kill = get().findTokenPos(
+      get().playersData[base].tokens.find((t) => t.id === tokenId).pos,
+      base,
+    );
+    
+    if (steps === 6 || kill || home === 56) {
+      set({ value: 0 });
+    } else {
+      const updateChoice = get().choice + 1;
+      set({ choice: updateChoice, value: 0 });
+      localStorage.setItem("choice", updateChoice);
+    }
+  },
+
+  killToken: async (tokenId, pos, base) => {
+    const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
+
+    const { playersData } = get();
+
+    const token = playersData[base].tokens.find((t) => t.id === tokenId);
+
+    if (!token) return;
+
+    // 🚶 Step-by-step movement
+    for (let i = pos; i >= -1; i--) {
+      set((state) => {
+        const currentToken = state.playersData[base].tokens.find(
+          (t) => t.id === tokenId,
+        );
+
+        const newPos = i;
+
+        return {
+          playersData: {
+            ...state.playersData,
+            [base]: {
+              ...state.playersData[base],
+              tokens: state.playersData[base].tokens.map((t) =>
+                t.id === tokenId ? { ...t, pos: newPos } : t,
+              ),
+            },
+          },
+        };
+      });
+
+      await sleep(90);
+    }
   },
 
   findTokenId: (x, y, base, steps) => {
     const [row, col] = boardData[base].origin;
     let id = null;
-    if (steps === 6 && (x <= row + 5 && x >= row + 1 && y <= col + 5 && y >= col + 1)) {
-      id = get().playersData[base].tokens.find(t => t.pos === -1)?.id || null;
-    }
-    else {
-      const pos = boardData[base].path.findIndex(([r, c]) => r === y && c === x);
-      if(pos !== -1) id = get().playersData[base].tokens.find(t => t.pos === pos)?.id || null;
+    if (
+      steps === 6 &&
+      x <= row + 5 &&
+      x >= row + 1 &&
+      y <= col + 5 &&
+      y >= col + 1
+    ) {
+      id = get().playersData[base].tokens.find((t) => t.pos === -1)?.id || null;
+    } else {
+      const pos = boardData[base].path.findIndex(
+        ([r, c]) => r === y && c === x,
+      );
+      if (pos !== -1)
+        id =
+          get().playersData[base].tokens.find((t) => t.pos === pos)?.id || null;
     }
     return id;
   },
 
   findTokenPos: (pos, base) => {
     const [y, x] = boardData[base].path[pos];
-    if(starCells.find(([r, c]) => r === x && c === y)) return;
+    if (starCells.find(([r, c]) => r === x && c === y)) return;
 
     let index = null;
-    get().players.forEach(pl => {
-      if(pl === base) return;
+    let kill = false;
+    get().players.forEach((pl) => {
+      if (pl === base) return;
       index = boardData[pl].path.findIndex(([r, c]) => r === y && c === x);
-      if(index === -1) return
+      if (index === -1) return;
 
-      const id = get().playersData[pl].tokens.find(t => t.pos === index)?.id || null;
-      if(id) console.log(id, pl, "move to -1", base);
+      const id =
+        get().playersData[pl].tokens.find((t) => t.pos === index)?.id || null;
+      if (id) {
+        get().killToken(id, index, pl);
+        console.log("kill");
+        kill = true;
+      }
     });
+    return kill;
   },
 
   handleClick: async (e, tokenRef, size) => {
@@ -123,18 +183,17 @@ const useLudo = create((set, get) => ({
     const base = get().players[get().choice % 4];
 
     let id = get().findTokenId(x, y, base, steps);
-    
-    if(id) get().moveToken(id, steps, base);
+
+    if (id) get().moveToken(id, steps, base);
   },
 
   tokenOut: (base) => {
-    return get().playersData[base].tokens.some(t => t.pos !== -1);
+    return get().playersData[base].tokens.some((t) => t.pos !== -1);
   },
 
   skip: () => {
-    console.log(get().choice)
-    set({value: 0, choice: get().choice+1});
-  }
+    set({ value: 0, choice: get().choice + 1 });
+  },
 }));
 
 export default useLudo;

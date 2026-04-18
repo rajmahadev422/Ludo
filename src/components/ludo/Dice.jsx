@@ -129,8 +129,8 @@ export default function Dice() {
   `;
 
   const diceStyle = {
-    width: "80px",
-    height: "80px",
+    width: "60px",
+    height: "60px",
     borderRadius: "16px",
     cursor: rolling ? "wait" : "pointer",
     userSelect: "none",
@@ -161,7 +161,7 @@ export default function Dice() {
   return (
     <>
       <style>{spinKeyframes}</style>
-      <div>
+      <div className="bg-white p-2 rounded">
         <div
           onClick={rollDice}
           style={diceStyle}

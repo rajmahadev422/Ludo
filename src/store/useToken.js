@@ -45,6 +45,7 @@ export default function handleToken(
           boardData[base].path[p][0],
           cell,
           base,
+          true,
         );
     });
 }
@@ -165,32 +166,8 @@ function drawToken(ctx, row, col, cell, color, selected = false) {
   ctx.lineWidth = cell * 0.02;
   ctx.stroke();
 
-  // if(selected) highlightToken(ctx,x, y, radius, cell, style, 0.1);
 }
 
-function highlightToken(ctx, x, y, radius = 1, cell, style, dashOffset) {
-  console.log("highlight");
-  ctx.save();
-
-  // glow effect
-  ctx.shadowColor = style.main;
-  ctx.shadowBlur = 15;
-
-  ctx.beginPath();
-
-  // dashed circle
-  ctx.setLineDash([6, 4]);
-  ctx.lineDashOffset = dashOffset;
-
-  const pulse = 1 + Math.sin(Date.now() * 0.01) * 0.05;
-  ctx.arc(x, y, radius * 1.3 * pulse, 0, Math.PI * 2);
-
-  ctx.strokeStyle = style.light;
-  ctx.lineWidth = cell * 0.06;
-  ctx.stroke();
-
-  ctx.restore();
-}
 
 // Helper function to draw a star on the token
 function drawStar(ctx, cx, cy, radius, color) {

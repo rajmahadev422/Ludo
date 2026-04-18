@@ -9,11 +9,7 @@ import { useRef } from "react";
 const Token = ({ size }) => {
   const tokenRef = useRef(null);
 
-  const { initializeToken, playersData, handleClick, value, choice, players } = useLudo();
-
-  useEffect(() => {
-    initializeToken();
-  }, [0]);
+  const { playersData, handleClick, value, choice, players } = useLudo();
 
   useEffect(() => {
     const canvas = tokenRef.current;
@@ -21,11 +17,9 @@ const Token = ({ size }) => {
     if (playersData) {
       const base = players[choice % 4];
       handleToken(ctx, canvas, size, playersData, base);
-
-      addText(ctx, base, 1,0.5)
     };
     localStorage.setItem('playersData', JSON.stringify(playersData));
-  }, [size, playersData, value, choice]);
+  }, [size, playersData, value]);
 
   function addText(ctx, text, x, y) {
     const cell = size/15;

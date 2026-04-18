@@ -33,7 +33,7 @@ export default function LocalPage() {
     console.log("FORM DATA:", data);
 
     localStorage.removeItem('playersData');
-    alert('remove previous game')
+    
     window.location.href = "/local/game";
   };
 

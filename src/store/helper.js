@@ -366,3 +366,10 @@ export function check(ctx, canvas, size) {
     drawDot(ctx, row+0.5, col+0.5, cell, boardData['yellow'].color);
   })
 }
+
+export const diceLoc = {
+  yellow: ["right-0 -bottom-20", "-right-20 bottom-0"],
+  blue: ["left-0 -bottom-20", "-left-20 bottom-0"],
+  red: ["left-0 -top-20", "-left-20 top-0"],
+  green: ["right-0 -top-20", "-right-20 top-0"]
+}

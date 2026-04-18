@@ -51,7 +51,7 @@ export default function Home() {
 
           {/* Online Multiplayer */}
           <Link 
-            href="/online" 
+            href="/online"
             className="group relative flex-1 min-w-60"
           >
             <div className="absolute inset-0 bg-linear-to-r from-blue-400 to-indigo-500 rounded-2xl blur-xl opacity-70 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -113,10 +113,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Footer */}
-        {/* <div className="absolute bottom-4 mt-3 text-white/30 text-sm">
-          © 2024 Ludo Game • All rights reserved
-        </div> */}
       </div>
     </div>
   );
