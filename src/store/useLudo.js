@@ -194,6 +194,12 @@ const useLudo = create((set, get) => ({
   skip: () => {
     set({ value: 0, choice: get().choice + 1 });
   },
+  playSound: (filePath) => {
+    const audio = new Audio(filePath);
+    audio.play().catch(err => {
+      console.error("Audio play failed:", err);
+    });
+}
 }));
 
 export default useLudo;

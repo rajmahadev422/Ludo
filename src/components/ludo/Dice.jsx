@@ -84,12 +84,13 @@ export default function Dice() {
   const [rolling, setRolling] = useState(false);
   const [flash, setFlash] = useState(false);
 
-  const {set, value, tokenOut, players, choice, skip} = useLudo()
+  const { set, value, tokenOut, players, choice, skip, playSound } = useLudo();
 
   const rollDice = () => {
     if (rolling || value !== 0) return;
     setRolling(true);
     setFlash(false);
+    playSound("/ludo/dice-roll.mp3");
 
     setTimeout(() => {
       const result = Math.min(Math.floor(Math.random() * 8) + 1, 6);
@@ -97,11 +98,9 @@ export default function Dice() {
       setFlash(true);
       setTimeout(() => setFlash(false), 400);
 
-      if(result !== 6 && !tokenOut(players[choice % 4])) skip();
-      else set({value: result});
+      if (result !== 6 && !tokenOut(players[choice % 4])) skip();
+      else set({ value: result });
     }, 600);
-
-
   };
 
   const spinKeyframes = `
