@@ -95,13 +95,11 @@ const useLudo = create((set, get) => ({
 
     if (!token) return;
 
+    get().playSound("/ludo/kill-path.wav");
     // 🚶 Step-by-step movement
     for (let i = pos; i >= -1; i--) {
       set((state) => {
-        const currentToken = state.playersData[base].tokens.find(
-          (t) => t.id === tokenId,
-        );
-
+        
         const newPos = i;
 
         return {
@@ -145,7 +143,10 @@ const useLudo = create((set, get) => ({
 
   findTokenPos: (pos, base) => {
     const [y, x] = boardData[base].path[pos];
-    if (starCells.find(([r, c]) => r === x && c === y)) return;
+    if (starCells.find(([r, c]) => r === x && c === y)) {
+      get().playSound("/ludo/kill.wav");
+      return false;
+    }
 
     let index = null;
     let kill = false;
