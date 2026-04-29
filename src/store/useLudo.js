@@ -193,6 +193,8 @@ const useLudo = create((set, get) => ({
   },
 
   skip: () => {
+    const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
+    sleep(200);
     set({ value: 0, choice: get().choice + 1 });
   },
   playSound: (filePath) => {
