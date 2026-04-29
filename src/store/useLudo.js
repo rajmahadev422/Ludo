@@ -9,6 +9,7 @@ const useLudo = create((set, get) => ({
   set: set,
 
   initializeToken: () => {
+    get().controlLoopSound("/ludo/game.mp3", true);
     const playersData =
       JSON.parse(localStorage.getItem("playersData")) || plToken;
 
@@ -202,7 +203,34 @@ const useLudo = create((set, get) => ({
     audio.play().catch(err => {
       console.error("Audio play failed:", err);
     });
-}
+},
+loopAudio: null,
+
+controlLoopSound: (src, on) => {
+  // Start looping
+  let loopAudio = get().loopAudio;
+  if (on) {
+    // prevent multiple instances
+    if (loopAudio) return;
+
+    loopAudio = new Audio(src);
+    loopAudio.loop = true;
+    loopAudio.volume = 0.5;
+
+    // Required for mobile browsers
+    loopAudio.play().catch(err => {
+      console.log("Audio play blocked:", err);
+    });
+  } 
+  // Stop looping
+  else {
+    if (!loopAudio) return;
+
+    loopAudio.pause();
+    loopAudio.currentTime = 0;
+    loopAudio = null;
+  }
+},
 }));
 
 export default useLudo;
