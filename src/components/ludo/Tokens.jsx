@@ -3,8 +3,7 @@
 import useLudo from "@/store/useLudo";
 import handleToken from "@/store/useToken";
 
-import React, { useEffect, useState } from "react";
-import { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 const Token = ({ size }) => {
   const tokenRef = useRef(null);
@@ -19,7 +18,7 @@ const Token = ({ size }) => {
       handleToken(ctx, canvas, size, playersData, base);
     };
     localStorage.setItem('playersData', JSON.stringify(playersData));
-  }, [size, playersData, value]);
+  }, [size, playersData, value, choice]);
 
   function addText(ctx, text, x, y) {
     const cell = size/15;

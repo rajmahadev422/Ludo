@@ -36,7 +36,7 @@ export default function handleToken(
       let p = pos;
       if (p > 56) p = 56;
       if (p === -1) {
-        drawToken(ctx, initial[0], initial[1], cell, base);
+        drawToken(ctx, initial[0], initial[1], cell, base, true);
       }
       else
         drawToken(
@@ -158,7 +158,7 @@ function drawToken(ctx, row, col, cell, color, selected = false) {
     radius * 0.25,
     style.highlight,
   );
-
+ if(selected) drawCircle(ctx,x, y, cell, style.highlight);
   // Bottom shadow/depth ring
   ctx.beginPath();
   ctx.arc(x + radius * 0.1, y + radius * 0.1, radius * 0.85, 0, Math.PI * 2);
@@ -168,6 +168,21 @@ function drawToken(ctx, row, col, cell, color, selected = false) {
 
 }
 
+function drawCircle(ctx,x, y, cell, color = '#007bff') {
+  // 1. Define the dash pattern [dash length, gap length]
+ctx.setLineDash([5, 10]); 
+
+// 2. Begin the path
+ctx.beginPath();
+
+// 3. Draw the arc (x, y, radius, startAngle, endAngle)
+ctx.arc(x, y, cell/2-5, 0, Math.PI * 2);
+
+// 4. Style and stroke
+ctx.strokeStyle = color;
+ctx.lineWidth = 2;
+ctx.stroke();
+}
 
 // Helper function to draw a star on the token
 function drawStar(ctx, cx, cy, radius, color) {
