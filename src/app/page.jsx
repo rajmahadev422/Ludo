@@ -51,7 +51,7 @@ export default function Home() {
 
           {/* Online Multiplayer */}
           <Link 
-            href="/online"
+            href="/room"
             className="group relative flex-1 min-w-60"
           >
             <div className="absolute inset-0 bg-linear-to-r from-blue-400 to-indigo-500 rounded-2xl blur-xl opacity-70 group-hover:opacity-100 transition-opacity duration-300"></div>
